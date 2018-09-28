@@ -5,8 +5,8 @@ import { Player } from '../interfaces/player.interface';
 import { PlayerService } from '../services/player.service';
 
 @Controller('/api/players')
-export class PlayersController {
-  private logger = new Logger('/api/players -> PlayersController');
+export class PlayerController {
+  private logger = new Logger('/api/players -> PlayerController');
 
   constructor(private playerService: PlayerService) {
   }
