@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Pagination } from '../interfaces/pagination.interface';
 import { Player } from '../interfaces/player.interface';
 import { StoreId } from '../interfaces/store.interface';
-import { Store } from '../stores/player.store';
+import { Store } from '../classes/store';
 
 @Injectable()
 export class PlayerService {
