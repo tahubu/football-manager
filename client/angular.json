@@ -54,7 +54,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "football-manager-front-end:build"
+            "browserTarget": "football-manager-front-end:build",
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
