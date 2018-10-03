@@ -1,9 +1,9 @@
-<!--The content below is only a placeholder and can be replaced.-->
 
-<div class="container">
-  <div class="row">
-    <div class="column">
-      <a class="button" routerLink="/main">Main</a>
+<div class="container grid-lg">
+  <div class="columns">
+    <div class="column col-12 text-center">
+      <button class="btn" routerLink="/main" [routerLinkActive]="['btn-primary']">Main</button>
+      <button class="btn" routerLink="/not-found" routerLinkActive="btn-primary">Test</button>
     </div>
   </div>
 </div>
