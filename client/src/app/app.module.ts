@@ -3,13 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PageNotFoundPageComponent } from './pages/page-not-found-page/page-not-found-page.component';
+import { Error404PageComponent } from './pages/error-404-page/error-404-page.component';
 import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PageNotFoundPageComponent,
+    Error404PageComponent,
     WelcomePageComponent
   ],
   imports: [

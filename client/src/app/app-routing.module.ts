@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { PageNotFoundPageComponent } from './pages/page-not-found-page/page-not-found-page.component';
+import { Error404PageComponent } from './pages/error-404-page/error-404-page.component';
 import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
 
 const routes: Routes = [
   { path: 'main', component: WelcomePageComponent },
-  { path: '**', component: PageNotFoundPageComponent },
+  { path: '**', component: Error404PageComponent },
 ];
 
 @NgModule({
