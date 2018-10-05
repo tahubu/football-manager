@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query } from '@nestjs/common';
 
-import { isNumeric } from '../utils';
+import { isNumeric, parseNumber } from '../utils';
 import { Player } from '../interfaces/player.interface';
 import { PlayerService } from '../services/player.service';
 
@@ -30,6 +30,8 @@ export class PlayerController {
   ): {id: number} {
     this.logger.log(`.addPlayer() - Body: ${JSON.stringify(newPlayer)}`);
 
+    if (typeof newPlayer.idTeam === 'string') newPlayer.idTeam = parseNumber(newPlayer.idTeam);
+
     const playerId = this.playerService.addPlayer(newPlayer);
 
     return {
@@ -43,6 +45,8 @@ export class PlayerController {
     @Body() data: Partial<Player>,
   ): {updated: boolean} {
     this.logger.log(`.modifyPlayer() - Query param: ${JSON.stringify({id: pId})} - Body: ${JSON.stringify(data)}`);
+
+    if (typeof data.idTeam === 'string') data.idTeam = parseNumber(data.idTeam);
 
     const playerId = isNumeric(pId) ? parseInt(pId, 10) : null;
     const playerUpdated = this.playerService.modifyPlayer(playerId, data);
