@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( "link" );
+			link.rel = "stylesheet";
+			link.type = "text/css";
+			link.href = window.location.search.match( /print-pdf/gi ) ? "css/print/pdf.css" : "css/print/paper.css";
+			document.getElementsByTagName( "head" )[0].appendChild( link );
+    </script>
+
+    <style>
+      .reveal h1 {
+        font-size: 1.5em;
+      }
+      .reveal .red { color: #ff2c2d; }
+      .reveal .green { color: #17ff2e; }
+      .blue { color: #1b91ff; }
+    </style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+        <section>
+          <h1>Hogyan készíts Football manager alkalmazást Angular-rel</h1>
+          <p>
+            <small>Open Academy, 2018. október 11.</small>
+            <br>
+            <small>Készítette <span class="blue">Csaba Tamás</span> és <span class="blue">Hugyák Tamás</span></small>
+          </p>
+        </section>
+
+        <section>
+          <h2>Miről is lesz ma szó?</h2>
+					<ul>
+            <li>TypeScript</li>
+            <li>RxJS</li>
+            <li>Angular 6.1.x</li>
+            <li>Angular CLI</li>
+            <li>Football manager alkalmazás</li>
+            <li>Best practices</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>TypeScript</h2>
+        </section>
+
+        <section>
+          <h2>Mi is az a TypeScript?</h2>
+					<ul>
+            <li class="fragment">JavaScript szuperhalmaza (a JS kód valid TS kód)</li>
+            <li class="fragment">Modern típusos JavaScript</li>
+            <li class="fragment">támogatja az új ECMAScript funkciókat => régebbi verzióra compile-ol</li>
+            <li class="fragment">fájlok kiterjesztése .ts</li>
+            <li class="fragment">IDE támogatás</li>
+            <li class="fragment">TSLint</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Compile-olt kód</h2>
+					<table style="width: 100%">
+            <tr>
+              <td style="width: 50%">
+                <pre><code class="hljs" data-trim>
+                  class User {
+                    private name: string;
+                    constructor(name: string) {
+                      this.name = name;
+                    }
+                    public greet() {
+                      return "Hi, " + this.name;
+                    }
+                  }
+
+                  const user = new User("Peter");
+                  console.log(user.greet());
+                </code></pre>
+              </td>
+              <td style="width: 50%">
+                <pre><code class="hljs" data-trim>
+                  var User = (function () {
+                    function User(name) {
+                      this.name = name;
+                    }
+                    User.prototype.greet = function () {
+                      return "Hello, " + this.name;
+                    };
+                    return User;
+                  }());
+
+                  var user = new User("Peter");
+                  console.log(user.greet());
+                </code></pre>
+              </td>
+            </tr>
+          </table>
+        </section>
+
+        <section>
+          <h2>Interface-ek</h2>
+					<ul>
+            <li>TypeScript</li>
+            <li>RxJS</li>
+            <li>Angular 6.1.x</li>
+            <li>Angular CLI</li>
+            <li>Football manager alkalmazás</li>
+            <li>Best practices</li>
+          </ul>
+        </section>
+
+
+				<section>Slide 1</section>
+				<section>Slide 2</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+        transition: "slide", // none/fade/slide/convex/concave/zoom
+
+        width: "100%",
+        height: "100%",
+        margin: 0,
+        // minScale: 1,
+        // maxScale: 1,
+
+				dependencies: [
+					{ src: "plugin/markdown/marked.js" },
+					{ src: "plugin/markdown/markdown.js" },
+					{ src: "plugin/notes/notes.js", async: true },
+					{ src: "plugin/highlight/highlight.js", async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
