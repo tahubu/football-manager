@@ -1,0 +1,56 @@
+
+<div class="modal modal-sm" id="modal-id"
+     [ngClass]="{active: modalActivated}">
+  <a href="#close" class="modal-overlay" aria-label="Close"></a>
+  <div class="modal-container">
+    <div class="modal-header">
+      <a href="#close" class="btn btn-clear float-right" aria-label="Close"
+         (click)="onClose($event)"></a>
+      <div class="modal-title h5">Edit player</div>
+    </div>
+    <div class="modal-body">
+      <div class="content">
+
+        <form novalidate [formGroup]="playerForm">
+          <div class="container">
+            <div class="columns">
+              <div class="column col-12 col-sm-8 form-group"
+                   [ngClass]="{'has-error': playerForm.get('name').hasError('required') && playerForm.get('name').touched}">
+                <label class="form-label" for="name">Name</label>
+                <input class="form-input" type="text" id="name" placeholder="" formControlName="name">
+              </div>
+
+              <div class="column col-12 col-sm-8 form-group"
+                   [ngClass]="{'has-error': playerForm.get('age').hasError('required') && playerForm.get('age').touched}">
+                <label class="form-label" for="age">Age</label>
+                <input class="form-input" type="text" id="age" placeholder="" formControlName="age">
+              </div>
+
+              <div class="column col-12 col-sm-8 form-group"
+                   [ngClass]="{'has-error': playerForm.get('shirtNumber').hasError('required') && playerForm.get('shirtNumber').touched}">
+                <label class="form-label" for="shirt">Shirt number</label>
+                <input class="form-input" type="text" id="shirt" placeholder="" formControlName="shirtNumber">
+              </div>
+
+              <div class="column col-12 col-sm-8 form-group">
+                <label class="form-label" for="idTeam">Team</label>
+                <select class="form-select" id="idTeam" formControlName="idTeam">
+                  <option *ngFor="let team of teams" [value]="team.id">{{team.name}}</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="column col-12 col-sm-8 form-group">
+        <button class="btn btn-primary input-group-btn"
+                [disabled]="playerForm.invalid"
+                (click)="onSubmit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
