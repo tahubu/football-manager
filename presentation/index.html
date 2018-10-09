@@ -152,8 +152,10 @@
                   templateUrl: './hero-list.component.html',
                   providers:  [ HeroService ]
                 })
-                export class HeroListComponent implements OnInit {
-                /* . . . */
+                export class HeroListComponent {
+                  public heroList: string[] = ['Superman', 'Batman'];
+                  constructor() {}
+                  .....
                 }
               </code></pre>
         </section>
