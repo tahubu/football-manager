@@ -124,8 +124,62 @@
         </section>
 
 
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+        <section>
+          <h2>Angular</h2>
+        </section>
+
+				<section>
+            <h2>Angular Modules</h2>
+            <pre><code class="hljs" data-trim>
+              import { NgModule }      from '@angular/core';
+              import { BrowserModule } from '@angular/platform-browser';
+              @NgModule({
+                imports:      [ BrowserModule ],
+                providers:    [ Logger ],
+                declarations: [ AppComponent ],
+                exports:      [ AppComponent ],
+                bootstrap:    [ AppComponent ]
+              })
+              export class AppModule { }
+              </code></pre>
+        </section>
+
+        <section>
+            <h2>Angular Components</h2>
+            <pre><code class="hljs" data-trim>
+                @Component({
+                  selector:    'app-hero-list',
+                  templateUrl: './hero-list.component.html',
+                  providers:  [ HeroService ]
+                })
+                export class HeroListComponent implements OnInit {
+                /* . . . */
+                }
+              </code></pre>
+        </section>
+
+
+        <section>
+            <h2>Angular Services</h2>
+            <pre><code class="hljs" data-trim>
+                export class HeroService {
+                  private heroes: Hero[] = [];
+
+                  constructor(
+                    private backend: BackendService,
+                    private logger: Logger) { }
+
+                  getHeroes() {
+                    this.backend.getAll(Hero).then( (heroes: Hero[]) => {
+                      this.logger.log(`Fetched ${heroes.length} heroes.`);
+                      this.heroes.push(...heroes); // fill cache
+                    });
+                    return this.heroes;
+                  }
+                }
+              </code></pre>
+        </section>
+
 			</div>
 		</div>
 
