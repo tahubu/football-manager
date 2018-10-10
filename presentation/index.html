@@ -90,12 +90,32 @@
         <section>
           <h2>Mi is az a TypeScript?</h2>
 					<ul>
+            <li class="fragment">erősen típusos, objektum-orientált, (JS-re) fordított nyelv</li>
             <li class="fragment">JavaScript szuperhalmaza (a JS kód valid TS kód)</li>
-            <li class="fragment">Modern típusos JavaScript</li>
+            <li class="fragment">modern típusos JavaScript</li>
             <li class="fragment">támogatja az új ECMAScript funkciókat => régebbi verzióra compile-ol</li>
             <li class="fragment">fájlok kiterjesztése .ts</li>
             <li class="fragment">IDE támogatás</li>
             <li class="fragment">TSLint</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>A TypeScript 3 komponense</h2>
+          <ol>
+            <li class="fragment">Language: szintaxis, kulcsszavak, típus annotáció</li>
+            <li class="fragment">TypeScript Compiler (tsc): a TS-ben írt instrukciókat átalakítja azok JS megfelelőjévé</li>
+            <li class="fragment">TypeScript Language Service: extra réteg a core fordító pipeline körül; IDE műveletek sokaságát biztosítja (kód kiegészítés, formázás, színezés, kijelölés, ...)</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>Deklarációs (.d.ts) fájlok</h2>
+          <ul>
+            <li class="fragment">a TS a fordítás során deklarációs fájlokat képes generálni</li>
+            <li class="fragment">eme fájlok interface-ként szolgálnak a JS kódok / komponensek számára</li>
+            <li class="fragment">a koncepció hasonló a C/C++ nyelv header fájljaihoz</li>
+            <li class="fragment">IntelliSense-t biztosít a típusok, modulok, függvény hívások és változók számára</li>
           </ul>
         </section>
 
@@ -142,15 +162,142 @@
         <section>
           <h2>Interface-ek</h2>
 					<ul>
-            <li>TypeScript</li>
-            <li>RxJS</li>
-            <li>Angular 6.1.x</li>
-            <li>Angular CLI</li>
-            <li>Football manager alkalmazás</li>
-            <li>Best practices</li>
+            <li>definiálja a szintaxist, amelyet az adott entitásnak be kell tartania</li>
+            <li>típus ellenőrzést biztosítanak az adatokra (értékekre) a fejlesztés során</li>
+            <li>meghatározott szerkezetet / felépítést követelnek</li>
+            <li>absztrakt típusok, a compile-olt kódban (JS) nincsenek interface-ek</li>
           </ul>
         </section>
 
+        <section>
+          <section>
+            <h2>Példa interface #1</h2>
+            <pre><code class="hljs" data-trim>
+              interface MyInterface {
+                myValue: string;
+                myMethod(myParam: number): number;
+              }
+
+              class MyClass implements MyInterface {
+                public myValue: string = 'Hi';
+                public myMethod(myParam: number): number {
+                  return myParam + 1;
+                }
+              }
+            </code></pre>
+          </section>
+          <section>
+            <h2>Példa interface #2</h2>
+            <pre><code class="hljs" data-trim>
+              interface User {
+                name: string;
+                age: number;
+                gender: 'female' | 'male';
+                greeting(): string;
+              }
+
+              const bela: User = {
+                name: 'Béla',
+                age: 34,
+                gender: 'male',
+                greeting() {
+                  return 'Hi!';
+                }
+              }
+            </code></pre>
+          </section>
+          <section>
+            <h2>Példa interface #3</h2>
+            <pre><code class="hljs" data-trim>
+              enum AnimalType { DOG, CAT }
+
+              interface Animal { name: string; type: AnimalType; }
+              interface Dog extends Animal { type: AnimalType.DOG; }
+              interface Cat extends Animal { type: AnimalType.CAT; color: string; }
+
+              const createDog: (string) => Dog = (name: string): Dog => {
+                return { name, type: AnimalType.DOG };
+              }
+              const createCat: (string) => Cat = (name: string): Cat => {
+                return { name, type: AnimalType.CAT, color: 'black' };
+              }
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <h2>Típusok használata</h2>
+          <pre><code class="hljs" data-trim>
+            type Obj = { [key: string]: any };
+            const createDog: (string) => Obj = (name: string): Obj => {
+              return { name, type: 'dog' };
+            }
+
+            class Calculate {
+              private base: number = 5;
+              sum(a: number, b: number): number {
+                return a + b;
+              }
+
+              divByBase: (number) => number = (n: number): number => {
+                return n / this.base;
+              }
+            }
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Osztályok</h2>
+          <pre><code class="hljs" data-trim>
+            class Animal {
+              name: string;
+              constructor(theName: string) { this.name = theName; }
+              move(distanceInMeters: number = 0) {
+                console.log(`${this.name} moved ${distanceInMeters}m.`);
+              }
+            }
+            class Snake extends Animal {
+              constructor(name: string) { super(name); }
+              move(distanceInMeters = 5) {
+                console.log("Slithering...");
+                super.move(distanceInMeters);
+              }
+            }
+            let sam: Animal = new Snake("Sammy the Python");
+            let tom: Snake = new Snake("Tommy the Rattlesnake");
+            tom.move();
+          </code></pre>
+        </section>
+
+        <section>
+          <section>
+            <h2>Generikus függvények, osztályok</h2>
+          </section>
+          <section>
+            <h2>Generikus függvények</h2>
+            <pre><code class="hljs" data-trim>
+              function identity&lt;T&gt;(arg: T): T {
+                return arg;
+              }
+
+              let numericIdentity = identity&lt;number&gt;(5);
+            </code></pre>
+          </section>
+          <section>
+            <h2>Generikus osztályok</h2>
+            <pre><code class="hljs" data-trim>
+            class GenericStore&lt;T&gt; {
+              private store: Array&lt;T&gt; = [];
+              add(item: T): void { this.store.push(item); }
+              getAll(): Array&lt;T&gt; { return this.store; }
+            }
+
+            let stringStore = new GenericStore&lt;string&gt;();
+            stringStore.add('Hello');
+            console.log(stringStore.getAll());
+            </code></pre>
+          </section>
+        </section>
 
         <section>
           <h2>Angular</h2>
