@@ -37,10 +37,38 @@
         <section>
           <h1>Hogyan készíts Football manager alkalmazást Angular-rel</h1>
           <p>
-            <small>Open Academy, 2018. október 11.</small>
+            <small>Open Academy</small>
+            <br>
+            <small>Budapest, 2018. október 11.</small>
             <br>
             <small>Készítette <span class="blue">Csaba Tamás</span> és <span class="blue">Hugyák Tamás</span></small>
           </p>
+        </section>
+
+        <section>
+          <section>
+            <h2>Telepítés</h2>
+            <ul>
+              <li>Git repo: <a href="https://github.com/TamasHugyak/football-manager">https://github.com/TamasHugyak/football-manager</a></li>
+              <li>Node.js: <a href="https://nodejs.org/">https://nodejs.org/</a></li>
+            </ul>
+          </section>
+          <section>
+            <p>Git clone után lépj bele a server mappába, majd telepítsd fel a függőségeket:</p>
+            <pre><code class="hljs" data-trim>
+              cd server
+              npm install
+            </code></pre>
+            Ezután indítsd el a szerver alkalmazást:
+            <pre><code class="hljs" data-trim>npm start</code></pre>
+            <p>Majd pedig lépj bele a client mappába, amely a repo gyökérkönyvtárában van, és telepítsd fel a függőségeket:</p>
+            <pre><code class="hljs" data-trim>
+              cd client
+              npm install
+            </code></pre>
+            Ezután indítsd el az Angular alkalmazást:
+            <pre><code class="hljs" data-trim>npm start</code></pre>
+          </section>
         </section>
 
         <section>
@@ -162,24 +190,156 @@
 
 
         <section>
-            <h2>Angular Services</h2>
+          <h2>Angular Services</h2>
+          <pre><code class="hljs" data-trim>
+            export class HeroService {
+              private heroes: Hero[] = [];
+
+              constructor(
+                private backend: BackendService,
+                private logger: Logger) { }
+
+              getHeroes() {
+                this.backend.getAll(Hero).then( (heroes: Hero[]) => {
+                  this.logger.log(`Fetched ${heroes.length} heroes.`);
+                  this.heroes.push(...heroes); // fill cache
+                });
+                return this.heroes;
+              }
+            }
+          </code></pre>
+        </section>
+
+
+        <section>
+          <h2>Best practices<h2>
+        </section>
+
+        <section>
+          <h2>Immutable data</h2>
+          <pre><code class="hljs" data-trim>
+            let user = {name: 'Peter', age: 30};
+            let categories = ['horror', 'action', 'thriller'];
+          </code></pre>
+
+          <p>Ne mutáljuk az adatot!</p>
+          <pre><code class="hljs" data-trim>
+            user.name = 'Pete';
+            categories.push('sci-fi');
+          </code></pre>
+
+          <p>Mindig változzon a referencia. Használjuk a <span class="blue">spread operator</span>-t:</p>
+          <pre><code class="hljs" data-trim>
+            user = {...user, name: 'Pete'};          // Object.assign({}, user, {name: 'Pete'});
+            categories = [...categories, 'sci-fi'];  // [].concat(categories, 'sci-fi');
+          </code></pre>
+        </section>
+
+        <section>
+          <section>
+            <h2><span class="blue">OnPush</span> Change Detection Strategy</h2>
             <pre><code class="hljs" data-trim>
-                export class HeroService {
-                  private heroes: Hero[] = [];
+              import { ChangeDetectionStrategy } from '@angular/core';
 
-                  constructor(
-                    private backend: BackendService,
-                    private logger: Logger) { }
+              // ...
 
-                  getHeroes() {
-                    this.backend.getAll(Hero).then( (heroes: Hero[]) => {
-                      this.logger.log(`Fetched ${heroes.length} heroes.`);
-                      this.heroes.push(...heroes); // fill cache
-                    });
-                    return this.heroes;
-                  }
+              Component({
+                selector: 'app-tooltip',
+                // ...
+                changeDetection: ChangeDetectionStrategy.OnPush,
+              })
+              export class TooltipComponent { }
+            </code></pre>
+          </section>
+          <section>
+            <p>OnPush esetén mikor fut change detection?</p>
+            <ol>
+              <li><span class="blue">@Input()</span> binding-on változik a referencia (immutable)</li>
+              <li><span class="blue">async pipe</span> használata</li>
+              <li><span class="blue">EventEmitter</span> és <span class="blue">DOM események</span> esetén (Component-en vagy gyerekén)</li>
+              <li><span class="blue">explicit</span> módon futtatunk change detection-t (pl. this.cdr.detectChanges() )</li>
+            </ol>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>async pipe</h2>
+            <p>Component-ben:</p>
+            <pre><code class="hljs" data-trim>
+              // fontos a kezdeti érték!
+              public user$ = new BehaviorSubject&lt;User | null&gt;(null);
+            </code></pre>
+            <p>Template-ben:</p>
+            <pre><code class="hljs" data-trim>
+              &lt;div *ngIf="user$ | async"&gt;
+                felhasználó neve: {{ (user$ | async).name }}
+              &lt;/div&gt;
+            </code></pre>
+          </section>
+          <section>
+            <p>Sokszor használom ugyanazon Observable-re az async pipe-ot a template-ben. Ez nem optimális. Mit tegyek?</p>
+            <p>
+              <a href="https://netbasal.com/diy-subscription-handling-directive-in-angular-c8f6e762697f">*ngSubscribe direktíva</a>
+            </p>
+          </section>
+        </section>
+
+
+        <section>
+          <section>
+            <h2>Subscription megszüntetése</h2>
+          </section>
+          <section>
+            <p>1. Ha feliratkozol egy Observable-re, akkor mindig le is kell iratkoznod róla.</p>
+            <p>Kivéve, ha:</p>
+            <ul>
+              <li>hiba történt (onError())</li>
+              <li>befejezték a stream-et (onComplete(), pl. HttpClient)</li>
+            </ul>
+            <pre><code class="hljs" data-trim>
+              export class ListUsersComponent implements OnInit, OnDestroy {
+                private usersSubscription: Subscription | null = null;
+
+                constructor(private userService: UserService) { }
+
+                public ngOnInit(): void {
+                  this.usersSubscription = this.userService
+                                               .getUsers()
+                                               .subscribe(users => {});
                 }
-              </code></pre>
+
+                public ngOnDestroy(): void {
+                  if (this.usersSubscription !== null)
+                    this.usersSubscription.unsubscribe();
+                }
+              }
+            </code></pre>
+          </section>
+          <section>
+            <p>2. Ha 2x vagy többször iratkozol fel Observable-ökre (pl. Component-ben, Service-ben), akkor egyszerűsítheted a leiratkozást a <span class="blue">takeUntil()</span> függvénnyel.</p>
+            <pre><code class="hljs" data-trim>
+              export class ListUserComponent implements OnInit, OnDestroy {
+                private destroy$: Subject<boolean> = new Subject<boolean>();
+                // ...
+
+                public ngOnInit(): void {
+                  this.userService.getUsers().pipe(takeUntil(this.destroy$)).subscribe(users => {});
+                  this.teamService.getTeams().pipe(takeUntil(this.destroy$)).subscribe(teams => {});
+                  this.pageService.getTeams().pipe(takeUntil(this.destroy$)).subscribe(pages => {});
+                }
+
+                public ngOnDestroy(): void {
+                  this.destroy$.next(true);
+                  this.destroy$.complete();
+                }
+              }
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <h2>Köszönjük a figyelmet!</h2>
         </section>
 
 			</div>
