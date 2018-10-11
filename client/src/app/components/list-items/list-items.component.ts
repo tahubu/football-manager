@@ -1,7 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { Player } from '@interfaces/player.interface';
-
 @Component({
   selector: 'list-items',
   templateUrl: './list-items.component.html',

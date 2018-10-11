@@ -1,0 +1,8 @@
+<h3>Teams</h3>
+
+<list-items
+  [items]="(teams | async) || []"
+  [columns]="['name']"
+  (removeItem)="remove($event)">
+</list-items>
+

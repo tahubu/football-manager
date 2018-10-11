@@ -3,10 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { Error404PageComponent } from './pages/error-404-page/error-404-page.component';
 import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
+import { TeamComponent } from "@pages/team/team.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'main', pathMatch: 'full' },
   { path: 'main', component: WelcomePageComponent },
+  { path: 'team', component: TeamComponent },
   { path: '**', component: Error404PageComponent },
 ];
 

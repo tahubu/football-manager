@@ -10,6 +10,7 @@ import { Error404PageComponent } from '@pages/error-404-page/error-404-page.comp
 import { WelcomePageComponent } from '@pages/welcome-page/welcome-page.component';
 import { ListItemsComponent } from '@components/list-items/list-items.component';
 import { FormatColumnNamePipe } from '@pipes/format-column-name.pipe';
+import { TeamComponent } from "@pages/team/team.component";
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { FormatColumnNamePipe } from '@pipes/format-column-name.pipe';
     WelcomePageComponent,
     ListItemsComponent,
     FormatColumnNamePipe,
+    TeamComponent
   ],
   imports: [
     BrowserModule,

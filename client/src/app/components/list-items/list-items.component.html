@@ -7,7 +7,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngIf="items.length === 0; else showItems">
+    <tr *ngIf="items?.length === 0; else showItems">
       <td [attr.colspan]="columns.length + 1" class="text-center">There are no items :(</td>
     </tr>
     <ng-template #showItems>
