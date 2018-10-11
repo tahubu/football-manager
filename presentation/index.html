@@ -28,6 +28,7 @@
       .reveal .red { color: #ff2c2d; }
       .reveal .green { color: #17ff2e; }
       .blue { color: #1b91ff; }
+      .orange { color: #ffa500; }
     </style>
 	</head>
 	<body>
@@ -298,6 +299,176 @@
             </code></pre>
           </section>
         </section>
+
+        <!-- ------------------------------------------------------------------------------------------------------ -->
+
+        <section>
+          <h2>RxJS</h2>
+        </section>
+
+        <section>
+          <blockquote>
+            &ldquo;Reactive Extensions for JavaScript (RxJS) is a reactive streams library that allows you to work with asynchronous data streams.&rdquo;
+          </blockquote>
+        </section>
+
+        <section>
+          <h2>Terminológia</h2>
+          <ul>
+            <li class="fragment">Observer</li>
+            <li class="fragment">Observable</li>
+            <li class="fragment">Subscription</li>
+            <li class="fragment">Subject</li>
+            <li class="fragment">Operators</li>
+          </ul>
+        </section>
+
+        <section>
+          <section>
+            <h2>Példa Observable #1</h2>
+            <pre><code class="hljs" data-trim>
+              const observable$ = Rx.Observable.create(observer => {
+                setTimeout(() => {
+                  observer.next(42);
+                  observer.complete();
+                }, 2000);
+              });
+
+              observable$.subscribe(
+                data => console.log('next(): %s', data),
+                void,
+                () => console.log('complete()')
+              );
+            </code></pre>
+          </section>
+          <section>
+            <h2>Példa Observable #2</h2>
+            <pre><code class="hljs" data-trim>
+              const observable$ = Rx.Observable.create(observer => {
+                setTimeout(() => {
+                  observer.error({status: 'error', statusNote: '...'});
+                }, 2000);
+              });
+
+              observable$.subscribe(
+                void,
+                error => console.log('error(): %s', error),
+                void
+              );
+            </code></pre>
+          </section>
+          <section>
+            <h2>Példa Observable #3</h2>
+            <pre><code class="hljs" data-trim>
+              const observable$ = Rx.Observable.create(observer => {
+                const clearFn = setTimeout(() => {
+                  observer.next(42);
+                  observer.complete();
+                }, 2000);
+
+                return () => clearTimeout(clearFn);
+              });
+              const subscription = observable$.subscribe(
+                data => console.log('next(): %s', data),
+                error => console.log('error(): %s', error),
+                () => console.log('complete()')
+              );
+              subscription.unsubscribe();
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Subject</h2>
+          </section>
+          <section>
+            <p>Fajtái:</p>
+            <ul>
+              <li>Subject</li>
+              <li>BehaviorSubject</li>
+              <li>ReplaySubject</li>
+              <li>AsyncSubject</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Példa Subject #1</h2>
+            <pre><code class="hljs" data-trim>
+              const subject = new Subject&lt;number&gt;();
+
+              subject.subscribe({
+                next: (value) => console.log(`next(): ${value}`)
+              });
+              subject.subscribe(
+                (value) => console.log(`next(): ${value}`)
+              );
+
+              subject.next(100);
+            </code></pre>
+          </section>
+          <section>
+            <h2>Példa Subject #2</h2>
+            <pre><code class="hljs" data-trim>
+              const subject = new BehaviorSubject&lt;number&gt;( 200 );
+
+              console.log( subject.getValue() );
+
+              subject.subscribe(
+                (value) => console.log(`next(): ${value}`)
+              );
+
+              subject.next(100);
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <h2>Operator-ok</h2>
+          <pre><code class="hljs" data-trim>
+            observable$
+              .pipe(
+                tap(data => console.log(data)),
+                filter(data => data.id > 10),
+                take(1)
+              )
+              .subscribe(data => {});
+            </code></pre>
+        </section>
+
+        <section>
+          <h2>Mit garantál az Observer?</h2>
+          <ol>
+            <li>If you pass an Observer doesn't have all of the methods implemented, that's okay.</li>
+            <li>You don't want to call <span class="orange">next</span> after a <span class="orange">complete</span> or an <span class="orange">error</span>.</li>
+            <li>You don't want anything called if you've unsubscribed.</li>
+            <li>Calls to <span class="orange">complete</span> and <span class="orange">error</span> need to call unsubscription logic.</li>
+            <li>If your <span class="orange">next</span>, <span class="orange">complete</span> or <span class="orange">error</span> handler throws an exception, you want to call your unsubscription logic so you don't leak resources.</li>
+            <li><span class="orange">next</span>, <span class="orange">complete</span> and <span class="orange">error</span> are all actually optional. You don't have to handle every value, or errors or completions. You might just want to handle one or two of those things.</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>Összegzés</h2>
+          <ul>
+            <li>tudunk adatot küldeni a stream-re (<span class="orange">Observer.next()</span>)</li>
+            <li>
+              tudunk információt kapni a stream-en
+              <ul>
+                <li>adatot kapni (<span class="orange">Observable.subscribe((data) => {})</span>)</li>
+                <li>hibáról értesülni (<span class="orange">Observable.subscribe(void, (error) => {})</span>)</li>
+                <li>stream lezárásáról értesülni (<span class="orange">Observable.subscribe(void, void, () => {})</span>)</li>
+              </ul>
+            </li>
+            <li>le tudunk iratkozni a stream-ről (<span class="orange">Subscription.unsubscribe()</span>)</li>
+            <li>tudjuk manipulálni a stream-en lévő adatot (<span class="orange">Observable.pipe()</span>)</li>
+          </ul>
+        </section>
+
+        <!-- ------------------------------------------------------------------------------------------------------ -->
+
 
         <section>
           <h2>Angular</h2>
