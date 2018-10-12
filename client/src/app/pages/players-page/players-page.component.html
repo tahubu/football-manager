@@ -1,0 +1,11 @@
+
+<div class="columns">
+  <div class="column col-12">
+    <h2 class="text-center">Players page</h2>
+    <add-player [teams]="teams$ | async"
+                (addPlayer)="onAddPlayer($event)"></add-player>
+    <div class="divider"></div>
+    <list-items [items]="players$ | async"
+                [columns]="['name', 'age', 'shirtNumber', 'idTeam']"></list-items>
+  </div>
+</div>

@@ -11,6 +11,8 @@ import { WelcomePageComponent } from '@pages/welcome-page/welcome-page.component
 import { ListItemsComponent } from '@components/list-items/list-items.component';
 import { FormatColumnNamePipe } from '@pipes/format-column-name.pipe';
 import { TeamComponent } from "@pages/team/team.component";
+import { PlayersPageComponent } from './pages/players-page/players-page.component';
+import { AddPlayerComponent } from './pages/players-page/add-player/add-player.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { TeamComponent } from "@pages/team/team.component";
     WelcomePageComponent,
     ListItemsComponent,
     FormatColumnNamePipe,
-    TeamComponent
+    TeamComponent,
+    PlayersPageComponent,
+    AddPlayerComponent
   ],
   imports: [
     BrowserModule,
